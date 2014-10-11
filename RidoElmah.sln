@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RidoElmah", "src\RidoElmah\RidoElmah.csproj", "{90029532-A678-4726-80D7-20DCD55638FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApp", "test\SampleWebApp\SampleWebApp.csproj", "{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90029532-A678-4726-80D7-20DCD55638FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90029532-A678-4726-80D7-20DCD55638FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90029532-A678-4726-80D7-20DCD55638FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90029532-A678-4726-80D7-20DCD55638FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
