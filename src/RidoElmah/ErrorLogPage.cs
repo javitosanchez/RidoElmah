@@ -377,14 +377,26 @@ namespace Elmah
 
                 TableCell messageCell = new TableCell();
                 messageCell.CssClass = "error-col";
+                
+                Panel urlPanel = new Panel();
+
+                HyperLink urlLink = new HyperLink();
+                urlLink.NavigateUrl = error.ServerVariables["URL"];
+                urlLink.Text = error.ServerVariables["URL"];
+
+                urlPanel.Controls.Add(urlLink);
 
                 Label messageLabel = new Label();
                 messageLabel.Text = this.Server.HtmlEncode(error.Message);
 
+                
                 HyperLink detailsLink = new HyperLink();
                 detailsLink.NavigateUrl = BasePageName + "/detail?id=" + HttpUtility.UrlEncode(errorEntry.Id);
                 detailsLink.Text = "Details&hellip;";
+                
+                
 
+                messageCell.Controls.Add(urlPanel);
                 messageCell.Controls.Add(messageLabel);
                 messageCell.Controls.Add(new LiteralControl(" "));
                 messageCell.Controls.Add(detailsLink);
@@ -398,7 +410,7 @@ namespace Elmah
                 bodyRow.Cells.Add(FormatCell(new TableCell(), error.User, "user-col"));
                 bodyRow.Cells.Add(FormatCell(new TableCell(), error.Time.ToShortDateString(), "date-col", 
                     error.Time.ToLongDateString()));
-                bodyRow.Cells.Add(FormatCell(new TableCell(), error.Time.ToShortTimeString(), "time-col",
+                bodyRow.Cells.Add(FormatCell(new TableCell(), error.Time.ToLongTimeString(), "time-col",
                     error.Time.ToLongTimeString()));
 
                 //
