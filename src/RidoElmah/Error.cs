@@ -31,6 +31,7 @@ namespace Elmah
     using System.Xml;
     using Thread = System.Threading.Thread;
     using NameValueCollection = System.Collections.Specialized.NameValueCollection;
+    using Microsoft.WindowsAzure.ServiceRuntime;
 
     #endregion
 
@@ -91,7 +92,7 @@ namespace Elmah
             // Load the basic information.
             //
 
-            _hostName = Environment.MachineName;
+            _hostName = TryFindAzureRole();
             _typeName = baseException.GetType().FullName;
             _message = baseException.Message;
             _source = baseException.Source;
@@ -126,6 +127,15 @@ namespace Elmah
                 _form = CopyCollection(request.Form);
                 _cookies = CopyCollection(request.Cookies);
             }
+        }
+
+        private string TryFindAzureRole()
+        {
+            if (RoleEnvironment.IsAvailable)
+            {
+                return RoleEnvironment.CurrentRoleInstance.Role.Name;
+            }
+            return Environment.MachineName;
         }
 
         /// <summary>

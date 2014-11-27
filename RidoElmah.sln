@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RidoElmah", "src\RidoElmah\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApp", "test\SampleWebApp\SampleWebApp.csproj", "{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "SampleAzureCS", "test\SampleAzureCS\SampleAzureCS.ccproj", "{43CD80C4-2949-443A-BB8D-421F4E001298}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D62E8CBD-BD46-49FC-8683-3CF290E56FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43CD80C4-2949-443A-BB8D-421F4E001298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43CD80C4-2949-443A-BB8D-421F4E001298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43CD80C4-2949-443A-BB8D-421F4E001298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43CD80C4-2949-443A-BB8D-421F4E001298}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
