@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationException.cs" />
+    <Compile Include="AzStorageTableAdapter.cs" />
     <Compile Include="Azure\ErrorEntity.cs" />
     <Compile Include="Azure\IErrorEntity.cs" />
     <Compile Include="Azure\ITableErrorLog.cs" />
@@ -91,6 +92,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ErrorLogPageFactory.cs" />
+    <Compile Include="ErrorLogSectionHandler.cs" />
     <Compile Include="ErrorPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -113,6 +115,7 @@
     <Compile Include="PoweredBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityConfiguration.cs" />
+    <Compile Include="SecuritySectionHandler.cs" />
     <Compile Include="SimpleServiceProviderFactory.cs" />
     <Compile Include="SpeedBar.cs" />
     <Compile Include="StringTranslation.cs" />

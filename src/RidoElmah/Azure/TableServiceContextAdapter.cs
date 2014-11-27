@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.WindowsAzure;
-using System.Data.Services.Client;
+﻿using System.Data.Services.Client;
 using Microsoft.WindowsAzure.Storage.Table.DataServices;
 
 namespace Rido.Core.Elmah

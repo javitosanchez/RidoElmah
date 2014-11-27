@@ -70,7 +70,7 @@ namespace Elmah
             }
             catch (FormatException e)
             {
-                throw new ConfigurationException(string.Format("Error in parsing the '{0}' attribute of the '{1}' element as a boolean value. Use either 1, 0, true or false (latter two being case-sensitive).", attribute.Name, attribute.OwnerElement.Name), e, attribute);
+                throw new ConfigurationErrorsException(string.Format("Error in parsing the '{0}' attribute of the '{1}' element as a boolean value. Use either 1, 0, true or false (latter two being case-sensitive).", attribute.Name, attribute.OwnerElement.Name), e, attribute);
             }
         }
         

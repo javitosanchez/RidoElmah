@@ -5,10 +5,11 @@ using System.Text;
 //using Microsoft.WindowsAzure.StorageClient;
 using Elmah;
 using Microsoft.WindowsAzure.Storage.Table.DataServices;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Rido.Core.Elmah
 {
-    public class ErrorEntity : TableServiceEntity, IErrorEntity
+    public class ErrorEntity : TableEntity, IErrorEntity
     {
         [System.Obsolete("Provided For Serialization From Windows Azure Do No Call Directly")]
         public ErrorEntity()
