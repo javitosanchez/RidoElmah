@@ -65,7 +65,7 @@ namespace Elmah
             AboutSet about = this.About;
 
             writer.Write("Powered by ");
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, "http://elmah.googlecode.com/");
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, "https://github.com/ridomin/RidoElmah");
             writer.RenderBeginTag(HtmlTextWriterTag.A);
             HttpUtility.HtmlEncode(Mask.EmptyString(about.Product, "(product)"), writer);
             writer.RenderEndTag();

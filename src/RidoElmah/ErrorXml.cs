@@ -131,7 +131,7 @@ namespace Elmah
             error.Detail = reader.GetAttribute("detail");
             error.User = reader.GetAttribute("user");
             string timeString = Mask.NullString(reader.GetAttribute("time"));
-            error.Time = timeString.Length == 0 ? new DateTime() : XmlConvert.ToDateTime(timeString);
+            error.Time = timeString.Length == 0 ? new DateTime() : XmlConvert.ToDateTime(timeString, XmlDateTimeSerializationMode.Utc);
             string statusCodeString = Mask.NullString(reader.GetAttribute("statusCode"));
             error.StatusCode = statusCodeString.Length == 0 ? 0 : XmlConvert.ToInt32(statusCodeString);
             error.WebHostHtmlMessage = reader.GetAttribute("webHostHtmlMessage");

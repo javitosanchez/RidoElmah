@@ -67,13 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationException.cs" />
-    <Compile Include="AzStorageTableAdapter.cs" />
     <Compile Include="Azure\ErrorEntity.cs" />
-    <Compile Include="Azure\IErrorEntity.cs" />
-    <Compile Include="Azure\ITableErrorLog.cs" />
-    <Compile Include="Azure\ITableServiceContextAdapter.cs" />
     <Compile Include="Azure\TableErrorLog.cs" />
-    <Compile Include="Azure\TableServiceContextAdapter.cs" />
     <Compile Include="Build.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationSectionHelper.cs" />

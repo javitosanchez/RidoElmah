@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using Microsoft.WindowsAzure.StorageClient;
-using Elmah;
-using Microsoft.WindowsAzure.Storage.Table.DataServices;
-using Microsoft.WindowsAzure.Storage.Table;
+using System.Threading.Tasks;
 
-namespace RidoElmah.Azure
+namespace TableStorageConsoleTest
 {
+
     public class ErrorEntity : TableEntity
     {
         [System.Obsolete("Provided For Serialization From Windows Azure Do No Call Directly")]
@@ -93,5 +93,73 @@ namespace RidoElmah.Azure
         /// Get or set
         /// </summary>
         public string ErrorXml { get; set; }
+    }
+
+  
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            new Program().ReadWriteFromTable();
+        }
+
+        void ReadWriteFromTable()
+        {
+            var _connectionString = "UseDevelopmentStorage=true";
+            var table = CloudStorageAccount.Parse(_connectionString).CreateCloudTableClient();
+            CloudTable myTable = table.GetTableReference("MyTable");
+            myTable.CreateIfNotExists();
+
+            //InsertItems(myTable);
+
+            //SelectAll(myTable);
+
+            
+
+
+            TableQuery<ErrorEntity> query = new TableQuery<ErrorEntity>()
+                .Where("Id eq guid'fe666de0-ffc3-4e79-a757-d9d7b770e7ad'");
+
+            var results = myTable.ExecuteQuery<ErrorEntity>(query);
+
+            foreach (var item in results)
+            {
+                Console.WriteLine(item.Id + " "  + item.StatusCode);
+            }
+
+        }
+
+        private static void SelectAll(CloudTable myTable)
+        {
+            // Construct the query operation for all customer entities where PartitionKey="Smith".
+            TableQuery<ErrorEntity> query = new TableQuery<ErrorEntity>()
+                .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThan, DateTime.MaxValue.Ticks.ToString()));
+
+            // Print the fields for each customer.
+            foreach (ErrorEntity entity in myTable.ExecuteQuery(query))
+            {
+                Console.WriteLine("{0}, {1}\t{2}\t{3}", entity.PartitionKey, entity.RowKey,
+                    entity.HostName, entity.StatusCode);
+            }
+        }
+
+        private static void InsertItems(CloudTable myTable)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                myTable.Execute(
+                    TableOperation.Insert(
+                        new ErrorEntity(DateTime.Now, Guid.NewGuid())
+                        {
+                            Id = Guid.NewGuid(),
+                            HostName = "rido",
+                            Message = "message",
+                            StatusCode = i
+                        }
+                        ));
+                Console.Write(".");
+            }
+        }
     }
 }

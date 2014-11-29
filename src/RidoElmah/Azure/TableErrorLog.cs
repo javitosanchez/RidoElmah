@@ -13,42 +13,39 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 
 
-namespace Rido.Core.Elmah
+namespace RidoElmah.Azure
 {
-    public class TableErrorLog : ErrorLog, ITableErrorLog
+    public class TableErrorLog : ErrorLog
     {
         private static string _partitionKey = null;
         private static string _rowKey = null;
 
         private readonly string _tableName = "WebErrors";
         private string _connectionString = null;
-        private ITableServiceContextAdapter _context = null;
+        private CloudTable _table= null;
+                
 
-        private ITableServiceContextAdapter context
+        private CloudTable table
         {
             get
             {
-                if (_context == null)
+                if (_table == null)
                 {                    
                     var table = CloudStorageAccount
                                     .Parse(_connectionString)
                                     .CreateCloudTableClient();
 
-                    CloudTable t = table.GetTableReference(_tableName);
-                    t.CreateIfNotExists();
-                    _context = new TableServiceContextAdapter(table.GetTableServiceContext());
+                    CloudTable tableWebErrors = table.GetTableReference(_tableName);
+                    tableWebErrors.CreateIfNotExists();
+
+                    _table = tableWebErrors;
                 }
-                return _context;
+                return _table;
             }
         }
         public string ConnectionString
         {
             get { return _connectionString; }
-        }
-
-        public TableErrorLog(ITableServiceContextAdapter context)
-        {
-            _context = context;
         }
 
         /// <summary>
@@ -68,6 +65,7 @@ namespace Rido.Core.Elmah
             }
 
             _connectionString = (string)config["connectionString"];
+        
         }
 
         /// <summary>
@@ -88,9 +86,8 @@ namespace Rido.Core.Elmah
                 Source = error.Source
             };
 
-            context.AddObject(this._tableName, entity);
-            context.SaveChanges();
-
+            TableOperation insert = TableOperation.Insert(entity, true);
+            table.Execute(insert);            
             return entity.Id.ToString();
         }
 
@@ -101,15 +98,16 @@ namespace Rido.Core.Elmah
         /// <returns>Error Fetched (or Null If Not Found)</returns>
         public override ErrorLogEntry GetError(string id)
         {
-            var query = from entity in context.CreateQuery<ErrorEntity>(this._tableName)
-                        where entity.Id == Guid.Parse(id)
-                        select entity;
+            TableQuery<ErrorEntity> query = new TableQuery<ErrorEntity>().Where(string.Format("Id eq guid'{0}'", id));
 
-            ErrorEntity errorEntity = query.FirstOrDefault();
-            if (errorEntity == null)
+            var results = table.ExecuteQuery(query);
+            
+            if (results.Count() <1 )
             {
                 return null;
             }
+
+            var errorEntity = results.FirstOrDefault();
 
             return new ErrorLogEntry(this, id, ErrorXml.DecodeString(errorEntity.ErrorXml));
         }
@@ -130,16 +128,39 @@ namespace Rido.Core.Elmah
                 throw new ArgumentOutOfRangeException("pageSize", pageSize, null);
 
 
-            var query = this.context
+            /*
+            var query = this.table
                            .CreateQuery<ErrorEntity>(this._tableName)
                            .Take(pageSize) as DataServiceQuery<ErrorEntity>;
+                           */
 
-            if (pageIndex != 0)
+            TableQuery<ErrorEntity> query;
+            
+            
+                query = new TableQuery<ErrorEntity>()
+                .Where(TableQuery.GenerateFilterCondition(
+                                "PartitionKey",
+                                QueryComparisons.LessThanOrEqual,
+                                DateTime.MaxValue.Ticks.ToString()))
+                .Take(pageSize);
+
+            var result = table.ExecuteQuery<ErrorEntity>(query);
+
+            var last = result.OrderByDescending(e => e.RowKey).FirstOrDefault();
+
+            if (pageIndex > 0)
             {
-                query = query.AddQueryOption("NextPartitionKey", TableErrorLog._partitionKey)
-                             .AddQueryOption("NextRowKey", TableErrorLog._rowKey);
+                query = new TableQuery<ErrorEntity>()
+                    .Where(TableQuery.CombineFilters(
+                            TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThan, last.PartitionKey),
+                            TableOperators.And,
+                            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.LessThan, last.RowKey)
+                        ))
+                    .Take(pageSize);
+                    result = table.ExecuteQuery<ErrorEntity>(query);
             }
-            var result = query.Execute();
+            
+            /*
 
             var response = (QueryOperationResponse)result;
 
@@ -151,10 +172,14 @@ namespace Rido.Core.Elmah
             TableErrorLog._partitionKey = nextPartition;
             TableErrorLog._rowKey = nextRow;
 
+            */
+
             foreach (var item in result)
             {
-                errorEntryList.Add( new ErrorLogEntry(this, item.Id.ToString(), ErrorXml.DecodeString(item.ErrorXml)));
+                errorEntryList.Add( new ErrorLogEntry(this, item.Id.ToString(), ErrorXml.DecodeString(item.ErrorXml)));                                
             };
+            
+            
 
             int count = 0;
             if (errorEntryList.Count == pageSize)
