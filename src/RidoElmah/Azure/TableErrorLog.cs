@@ -146,9 +146,6 @@ namespace RidoElmah.Azure
 
             var result = table.ExecuteQuery<ErrorEntity>(query);
 
-            
-            
-
             var last = result.OrderByDescending(e => e.RowKey).FirstOrDefault();
 
             if (pageIndex > 0)
